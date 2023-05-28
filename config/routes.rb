@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  get 'site/index'
+  root to: 'site#index'
+  
+  get 'animes', to: 'site#index'
   
   
   namespace :api do
