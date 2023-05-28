@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const AnimeList = ({animes}) => {
   const renderAnimes = (animesArr) => {
@@ -6,7 +7,9 @@ const AnimeList = ({animes}) => {
 
     return animesArr.map((anime) => (
       <li key={anime.id}>
-        {anime.name} - {anime.start_year}
+        <Link to={`/animes/${anime.id}`}>
+          {anime.name} - {anime.start_year}
+        </Link>
       </li>
     ));
   };

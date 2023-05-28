@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   root to: 'site#index'
   
   get 'animes', to: 'site#index'
+  get 'animes/:id', to: 'site#index'
   
   
   namespace :api do
