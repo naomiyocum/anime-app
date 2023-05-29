@@ -4,7 +4,7 @@ class CreateAnimes < ActiveRecord::Migration[7.0]
       t.string :name
       t.string :about
       t.string :image_url
-      t.integer :start_year
+      t.string :start_year
 
       t.timestamps
     end
