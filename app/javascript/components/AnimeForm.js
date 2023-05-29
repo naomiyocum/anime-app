@@ -3,6 +3,7 @@ import {Link, useNavigate} from 'react-router-dom';
 
 const AnimeForm = () => {
   const navigate = useNavigate();
+  const [formErrors, setFormErrors] = useState({})
   const [formData, setFormData] = useState({
     name: "",
     about: "",
@@ -20,9 +21,56 @@ const AnimeForm = () => {
     })
   }
 
+  const validateAnime = () => {
+    const errors = {};
+
+    if (formData.name === '') {
+      errors.name = 'You must enter a name';
+    }
+
+    if (formData.about === '') {
+      errors.about = 'You must enter an about section';
+    }
+
+    if (formData.start_year === '') {
+      errors.start_year = 'You must enter a start year';
+    }
+
+    if (formData.image_url === '') {
+      errors.image_url = 'You must enter an image URL';
+    }
+
+    return errors;
+  }
+
+  const isEmptyObject = (obj) => Object.keys(obj).length === 0;
+
+  const renderErrors = () => {
+    if (isEmptyObject(formErrors)) {
+      return null;
+    }
+
+    return (
+      <div className="errors">
+        <h3>The following errors prohibited the event from being saved:</h3>
+        <ul>
+          {Object.values(formErrors).map((formError) => (
+            <li key={formError}>{formError}</li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    addAnime(formData);
+    const errors = validateAnime(formData)
+
+    if (!isEmptyObject(errors)) {
+      setFormErrors(errors);
+    } else {
+      addAnime(formData);
+    }
   };
 
 
@@ -47,6 +95,7 @@ const AnimeForm = () => {
     <>
       <Link to="/animes">Back</Link>
       <h3>新しいアニメ</h3>
+      {renderErrors()}
       <form>
         <input
           type="text"
