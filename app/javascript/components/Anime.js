@@ -20,7 +20,7 @@ const Anime = () => {
       setIsLoading(false);
     }
     fetchAnime();
-  }, [])
+  }, []);
 
   return (
     <div>
@@ -30,6 +30,7 @@ const Anime = () => {
           <h1>{anime.name}</h1>
           <h3>Start Year: {anime.start_year}</h3>
           <p>About: {anime.about}</p>
+          <img src={anime.image_url} alt={anime.about}></img>
         </>
         )
       }

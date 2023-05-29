@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root to: 'site#index'
+  root to: redirect('/animes')
   
   get 'animes', to: 'site#index'
   get 'animes/:id', to: 'site#index'
