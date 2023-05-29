@@ -27,6 +27,7 @@ const Anime = () => {
       {isError && <p>Something went wrong. Check the console.</p>}
       {isLoading ? (<p>Loading...</p>) : (
         <>
+          <Link to="/animes">Back</Link>
           <h1>{anime.name}</h1>
           <h3>Start Year: {anime.start_year}</h3>
           <p>About: {anime.about}</p>
