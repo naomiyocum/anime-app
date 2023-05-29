@@ -17,6 +17,7 @@ const AnimeList = ({animes}) => {
   return (
     <section>
       <h2>アニメ</h2>
+      <Link to={"/animes/new"}>アニメを追加</Link>
       <ul>{renderAnimes(animes)}</ul>
     </section>
   );
