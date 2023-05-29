@@ -40,6 +40,6 @@ class Api::V1::AnimesController < ApplicationController
   end
 
   def anime_params
-    params.permit(:name, :about, :image_url)
+    params.require(:anime).permit(:name, :about, :start_year, :image_url)
   end
 end
