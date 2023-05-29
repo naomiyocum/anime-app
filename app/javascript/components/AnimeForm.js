@@ -1,28 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 
 const AnimeForm = () => {
   const navigate = useNavigate();
-  const [animes, setAnimes] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     about: "",
     start_year: 0,
     image_url: ""
   })
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await window.fetch("/api/v1/animes");
-        const data = await response.json();
-        setAnimes(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchData();
-  }, []);
 
   function handleChange(event) {
     const {name, value} = event.target
@@ -42,7 +28,7 @@ const AnimeForm = () => {
 
   const addAnime = async (anime) => {
     try {
-      const response = await window.fetch("/api/v1/animes", {
+      await window.fetch("/api/v1/animes", {
         method: 'POST',
         body: JSON.stringify(anime),
         headers: {
@@ -50,9 +36,6 @@ const AnimeForm = () => {
           'Content-Type': 'application/json'
         }
       });
-      const data = await response.json();
-      setAnimes(prevAnimes => ({ ...prevAnimes, data }));
-      console.log('it updated')
       window.alert(`${anime.name} added!`);
       navigate('/animes');
     } catch (error) {
