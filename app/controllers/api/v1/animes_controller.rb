@@ -1,5 +1,5 @@
 class Api::V1::AnimesController < ApplicationController
-  before_action :set_anime, only: %i[show update delete]
+  before_action :set_anime, only: %i[show update destroy]
 
   def index
     @animes = Anime.all
@@ -28,7 +28,7 @@ class Api::V1::AnimesController < ApplicationController
     end
   end
 
-  def delete
+  def destroy
     @anime.destroy
     render json: {notice: "Successfully deleted anime"}
   end
