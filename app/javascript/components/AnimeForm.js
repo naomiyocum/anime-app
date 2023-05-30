@@ -7,7 +7,7 @@ const AnimeForm = () => {
   const [formData, setFormData] = useState({
     name: "",
     about: "",
-    start_year: 0,
+    start_year: "",
     image_url: ""
   })
 
@@ -104,15 +104,17 @@ const AnimeForm = () => {
           onChange={handleChange}
           value={formData.name}
         />
-        <input
-          type="text"
+        <textarea
+          cols="30"
+          rows="5"
+          type="textarea"
           name="about"
           placeholder="About the Anime"
           onChange={handleChange}
           value={formData.about}
         />
         <input
-          type="number"
+          type="text"
           name="start_year"
           placeholder="Start Year"
           onChange={handleChange}
