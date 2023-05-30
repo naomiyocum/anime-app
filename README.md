@@ -1,24 +1,9 @@
-# README
+# Anime App
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+My first Rails/React monolith
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## Learning Goals
+- understand the structure of a Rails/React monolith
+- practice more with state, props, and routes
+- error handling in React
+- call the Rails API using the Fetch API
