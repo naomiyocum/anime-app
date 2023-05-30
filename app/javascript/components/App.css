@@ -28,3 +28,7 @@ form button {
 form button:hover {
   background-color: #0c2789;
 }
+
+img {
+  max-width: 40%;
+}

@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Routes, Route, useNavigate } from 'react-router-dom';
 import AnimeList from './AnimeList';
+import Anime from './Anime';
+import AnimeForm from './AnimeForm';
 
 const Editor = () => {
+  const navigate = useNavigate();
   const [animes, setAnimes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -22,6 +25,46 @@ const Editor = () => {
     fetchData();
   }, []);
 
+  const deleteAnime = async (animeId) => {
+    const sure = window.confirm("Are you sure?");
+
+    if (sure) {
+      try {
+        await window.fetch(`/api/v1/animes/${animeId}`, {
+          method: 'DELETE'
+        });
+        window.alert('Anime Deleted!');
+        navigate('/animes');
+        setAnimes(animes.filter(anime => anime.id !== animeId))
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+
+  const addAnime = async (anime) => {
+    try {
+      const response = await window.fetch("/api/v1/animes", {
+        method: 'POST',
+        body: JSON.stringify(anime),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      });
+
+      const savedAnime = await response.json();
+      const newAnimes = [...animes, savedAnime];
+      setAnimes(newAnimes);
+
+      window.alert(`${anime.name} added!`);
+      navigate('/animes');
+    } catch (error) {
+      console.error(error)
+    }
+  };
+
   return (
     <>
       {isError && <p>Something went wrong. Check the console.</p>}
@@ -31,6 +74,11 @@ const Editor = () => {
           <Link to={"/animes/new"}>アニメを追加</Link>
         </div>
       )}
+
+      <Routes>
+        <Route path=":id" element={<Anime onDelete={deleteAnime} animes={animes}/>} />
+        <Route path="new" element={<AnimeForm onSave={addAnime}/>} />
+      </Routes>
     </>
   )
 }

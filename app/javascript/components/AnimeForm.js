@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
-const AnimeForm = () => {
-  const navigate = useNavigate();
+const AnimeForm = ({onSave}) => {
   const [formErrors, setFormErrors] = useState({})
   const [formData, setFormData] = useState({
     name: "",
@@ -20,6 +19,23 @@ const AnimeForm = () => {
       }
     })
   }
+
+  const renderErrors = () => {
+    if (isEmptyObject(formErrors)) {
+      return null;
+    }
+
+    return (
+      <div className="errors">
+        <h3>The following errors prohibited the event from being saved:</h3>
+        <ul>
+          {Object.values(formErrors).map((formError) => (
+            <li key={formError}>{formError}</li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
 
   const validateAnime = () => {
     const errors = {};
@@ -45,23 +61,6 @@ const AnimeForm = () => {
 
   const isEmptyObject = (obj) => Object.keys(obj).length === 0;
 
-  const renderErrors = () => {
-    if (isEmptyObject(formErrors)) {
-      return null;
-    }
-
-    return (
-      <div className="errors">
-        <h3>The following errors prohibited the event from being saved:</h3>
-        <ul>
-          {Object.values(formErrors).map((formError) => (
-            <li key={formError}>{formError}</li>
-          ))}
-        </ul>
-      </div>
-    );
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const errors = validateAnime(formData)
@@ -69,34 +68,16 @@ const AnimeForm = () => {
     if (!isEmptyObject(errors)) {
       setFormErrors(errors);
     } else {
-      addAnime(formData);
+      onSave(formData);
     }
   };
-
-
-  const addAnime = async (anime) => {
-    try {
-      await window.fetch("/api/v1/animes", {
-        method: 'POST',
-        body: JSON.stringify(anime),
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
-      });
-      window.alert(`${anime.name} added!`);
-      navigate('/animes');
-    } catch (error) {
-      console.error(error)
-    }
-  }
 
   return (
     <>
       <Link to="/animes">Back</Link>
       <h3>新しいアニメ</h3>
       {renderErrors()}
-      <form>
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
           name="name"
