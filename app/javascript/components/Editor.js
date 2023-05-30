@@ -34,8 +34,8 @@ const Editor = () => {
           method: 'DELETE'
         });
         window.alert('Anime Deleted!');
-        navigate('/animes');
         setAnimes(animes.filter(anime => anime.id !== animeId))
+        navigate('/animes');
       } catch (error) {
         console.error(error);
       }
