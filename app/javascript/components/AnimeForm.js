@@ -1,24 +1,33 @@
-import React, { useState } from 'react';
-import {Link} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import {Link, useParams} from 'react-router-dom';
 import { isEmptyObject, validateAnime } from '../helpers/helpers.js';
 
-const AnimeForm = ({onSave}) => {
+const AnimeForm = ({animes, onSave}) => {
   const [formErrors, setFormErrors] = useState({})
-  const [formData, setFormData] = useState({
-    name: "",
-    about: "",
-    start_year: "",
-    image_url: ""
-  })
+  const {id} = useParams();
+
+  const defaults = {
+    name: '',
+    start_year: '',
+    about: '',
+    image_url: ''
+  }
+
+  const currAnime = id? animes.find((e) => e.id === Number(id)): {};
+  const initialAnimeState = {...defaults, ...currAnime}
+  const [anime, setAnime] = useState(initialAnimeState);
+
+  useEffect(() => {
+    setAnime(initialAnimeState);
+  }, [animes]);
+
+  const updateMe = (key, value) => {
+    setAnime((prevAnime) => ({...prevAnime, [key]: value}))
+  }
 
   function handleChange(event) {
     const {name, value} = event.target
-    setFormData(prevFormData => {
-      return {
-        ...prevFormData,
-        [name]: value
-      }
-    })
+    updateMe(name, value);
   }
 
   const renderErrors = () => {
@@ -40,12 +49,12 @@ const AnimeForm = ({onSave}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const errors = validateAnime(formData)
+    const errors = validateAnime(anime)
 
     if (!isEmptyObject(errors)) {
       setFormErrors(errors);
     } else {
-      onSave(formData);
+      onSave(anime);
     }
   };
 
@@ -60,7 +69,7 @@ const AnimeForm = ({onSave}) => {
           name="name"
           placeholder="Name"
           onChange={handleChange}
-          value={formData.name}
+          value={anime.name}
         />
         <textarea
           cols="30"
@@ -69,21 +78,21 @@ const AnimeForm = ({onSave}) => {
           name="about"
           placeholder="About the Anime"
           onChange={handleChange}
-          value={formData.about}
+          value={anime.about}
         />
         <input
           type="text"
           name="start_year"
           placeholder="Start Year"
           onChange={handleChange}
-          value={formData.start_year}
+          value={anime.start_year}
         />
         <input
           type="text"
           placeholder="Image URL"
           onChange={handleChange}
           name="image_url"
-          value={formData.image_url}
+          value={anime.image_url}
         />
         <button type="submit" onClick={handleSubmit}>Save</button>
       </form>

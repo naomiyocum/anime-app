@@ -65,6 +65,29 @@ const Editor = () => {
     }
   };
 
+  const updateAnime = async (updatedAnime) => {
+    try {
+      const response = await window.fetch(`/api/v1/animes/${updatedAnime.id}`, {
+        method: 'PUT',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedAnime)
+      });
+
+      const newAnimes = animes;
+      const idx = newAnimes.findIndex((anime) => anime.id === updatedAnime.id)
+      newAnimes[idx] = updatedAnime;
+      setAnimes(newAnimes);
+
+      window.alert('Anime updated!');
+      navigate(`/animes/${updatedAnime.id}`);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <>
       {isError && <p>Something went wrong. Check the console.</p>}
@@ -78,6 +101,7 @@ const Editor = () => {
       <Routes>
         <Route path=":id" element={<Anime onDelete={deleteAnime} animes={animes}/>} />
         <Route path="new" element={<AnimeForm onSave={addAnime}/>} />
+        <Route path=":id/edit" element={<AnimeForm animes={animes} onSave={updateAnime}/>}/>
       </Routes>
     </>
   )

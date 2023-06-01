@@ -15,11 +15,12 @@ const Anime = ({onDelete, animes}) => {
           <p>About: {anime.about}</p>
           <img src={anime.image_url} alt={anime.about}></img>
           <br /><br />
+          <Link to={`/animes/${anime.id}/edit`}>Edit</Link>
           <button
             type="button"
             onClick={() => onDelete(anime.id)}
           >
-            Delete Me
+            Delete
           </button>
         </>
     </div>
